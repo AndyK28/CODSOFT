@@ -13,6 +13,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GamePlayTest {
     @Test
+    public void checkGeneratedNumberTest() {
+        String input = "11\nno\n";
+        InputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        System.setIn(inputStream);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        NumberGame game = new NumberGame(1, 10, 1);
+        game.gamePlay();
+        int generatedNumber = game.getRandomNumber();
+        System.out.println(generatedNumber);
+        assertTrue(generatedNumber >= 1 && generatedNumber <= 10);
+    }
+
+    @Test
     public void gamePlayTest() {
         String input = "11\nno\n";
         InputStream inputStream = new ByteArrayInputStream(input.getBytes());
@@ -38,6 +54,5 @@ public class GamePlayTest {
                 "Game over. Your total score is: 0\n" +
                 "Thank you for playing!\n";
         assertEquals(expectedOutput, outputStream.toString());
-        assertTrue(generatedNumber >= 1 && generatedNumber <= 10);
     }
 }
