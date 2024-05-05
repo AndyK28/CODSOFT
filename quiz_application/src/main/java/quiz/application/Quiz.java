@@ -31,11 +31,10 @@ public class Quiz {
                 System.out.println("Question " + (i+1));
                 displayCurrentQuestion(currentQuestion);
 
-                startQuestionTimer(scanner);
                 int userChoice = userChoiceWithTimer(scanner, currentQuestion);
 
                 if (userChoice == -1) {
-                    System.out.println("Time's up! Moving on to the next question\n");
+                System.out.println("Time's up! Moving on to the next question\n");
                 } else checkAnswer(currentQuestion, userChoice);
             }
 
@@ -45,7 +44,7 @@ public class Quiz {
             String playAgainInput = scanner.next().toLowerCase();
             playAgain = playAgainInput.equals("y");
         }
-        System.out.println("Thank you for playing Quiz!");
+        System.out.print("Thank you for playing Quiz!");
         scanner.close();
     }
 
@@ -65,30 +64,34 @@ public class Quiz {
     }
 
     private void startQuestionTimer(Scanner scanner) {
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
+        Thread timerThread = new Thread(() -> {
+            try {
+                Thread.sleep( timePerQuestion * 1000L);
                 synchronized (scanner) {
                     scanner.notify();
                     timeIsUp = true;
                 }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
-        };
-        timer.schedule(task, timePerQuestion * 1000L);
+        });
+        timerThread.start();
     }
 
     private int userChoiceWithTimer(Scanner scanner, Question currentQuestion) {
-        int userChoice;
-        synchronized (scanner) {
+        int userChoice = -1;
+
+        synchronized
+        (scanner) {
             try {
+                System.out.println("Enter your choice: ");
+                startQuestionTimer(scanner);
                 if (!timeIsUp) {
-                    System.out.println("Enter your choice: ");
                     scanner.wait();
+                    userChoice = getUserChoice(scanner, currentQuestion.getOptions().length);
                 }
-                userChoice = getUserChoice(scanner, currentQuestion.getOptions().length);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            } catch (InterruptedException ignore) {
+
             } finally {
                 timeIsUp = false;
             }
@@ -100,7 +103,7 @@ public class Quiz {
         int choiceIndex = -1;
 
         while ((choiceIndex < 0 || choiceIndex >= numberOfOptions) && !timeIsUp) {
-            String choice = scanner.next().toUpperCase();
+            String choice = scanner.nextLine().toUpperCase();
             choiceIndex = choice.charAt(0) - 'A';
 
             if (choiceIndex < 0 || choiceIndex >= numberOfOptions) {
@@ -119,7 +122,7 @@ public class Quiz {
     }
 
     public void displayResult() {
-        System.out.println("Quz completed!");
+        System.out.println("Quiz completed!");
         System.out.println("Your score is " + score + "/" + totalQuestions);
     }
 }
