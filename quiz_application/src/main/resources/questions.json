@@ -1,0 +1,272 @@
+[
+  {
+    "question": "What is the capital of France?",
+    "options": ["A) London", "B) Paris", "C) Rome", "D) Berlin"],
+    "correctAnswerIndex": 1
+  },
+  {
+    "question": "Who wrote 'Romeo and Juliet'?",
+    "options": ["A) William Shakespeare", "B) Charles Dickens", "C) Jane Austen", "D) F. Scott Fitzgerald"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the chemical symbol for water?",
+    "options": ["A) W", "B) H2O", "C) O2", "D) H2"],
+    "correctAnswerIndex": 1
+  },
+  {
+    "question": "Which planet is known as the Red Planet?",
+    "options": ["A) Mars", "B) Venus", "C) Jupiter", "D) Saturn"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "Who painted the Mona Lisa?",
+    "options": ["A) Vincent van Gogh", "B) Pablo Picasso", "C) Leonardo da Vinci", "D) Michelangelo"],
+    "correctAnswerIndex": 2
+  },
+  {
+    "question": "What is the capital of Japan?",
+    "options": ["A) Beijing", "B) Tokyo", "C) Seoul", "D) Bangkok"],
+    "correctAnswerIndex": 1
+  },
+  {
+    "question": "Who is known as the 'Father of Computers'?",
+    "options": ["A) Alan Turing", "B) Charles Babbage", "C) Steve Jobs", "D) Bill Gates"],
+    "correctAnswerIndex": 1
+  },
+  {
+    "question": "What is the largest mammal in the world?",
+    "options": ["A) Blue whale", "B) African elephant", "C) Giraffe", "D) Hippopotamus"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "Which country is known as the 'Land of the Rising Sun'?",
+    "options": ["A) China", "B) India", "C) Japan", "D) Australia"],
+    "correctAnswerIndex": 2
+  },
+  {
+    "question": "Who discovered penicillin?",
+    "options": ["A) Alexander Fleming", "B) Louis Pasteur", "C) Marie Curie", "D) Isaac Newton"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the tallest mountain in the world?",
+    "options": ["A) Mount Kilimanjaro", "B) Mount Everest", "C) Mount Fuji", "D) Mount McKinley"],
+    "correctAnswerIndex": 1
+  },
+  {
+    "question": "Who wrote 'To Kill a Mockingbird'?",
+    "options": ["A) Harper Lee", "B) F. Scott Fitzgerald", "C) Ernest Hemingway", "D) Mark Twain"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the currency of Spain?",
+    "options": ["A) Euro", "B) Dollar", "C) Pound", "D) Peso"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "Who discovered gravity?",
+    "options": ["A) Isaac Newton", "B) Galileo Galilei", "C) Albert Einstein", "D) Johannes Kepler"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the chemical symbol for gold?",
+    "options": ["A) Au", "B) Ag", "C) Pt", "D) Hg"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "Who wrote 'Pride and Prejudice'?",
+    "options": ["A) Jane Austen", "B) Emily Bronte", "C) Charlotte Bronte", "D) Virginia Woolf"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the capital of Italy?",
+    "options": ["A) Paris", "B) Rome", "C) Athens", "D) Madrid"],
+    "correctAnswerIndex": 1
+  },
+  {
+    "question": "Who painted 'The Starry Night'?",
+    "options": ["A) Vincent van Gogh", "B) Pablo Picasso", "C) Claude Monet", "D) Leonardo da Vinci"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "Which planet is known as the 'Morning Star'?",
+    "options": ["A) Venus", "B) Mars", "C) Jupiter", "D) Saturn"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the chemical symbol for oxygen?",
+    "options": ["A) O", "B) H2O", "C) O2", "D) CO2"],
+    "correctAnswerIndex": 2
+  },
+  {
+    "question": "Who wrote '1984'?",
+    "options": ["A) George Orwell", "B) Aldous Huxley", "C) Ray Bradbury", "D) H.G. Wells"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the largest ocean on Earth?",
+    "options": ["A) Pacific Ocean", "B) Atlantic Ocean", "C) Indian Ocean", "D) Arctic Ocean"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "Who was the first woman to win a Nobel Prize?",
+    "options": ["A) Marie Curie", "B) Mother Teresa", "C) Rosa Parks", "D) Florence Nightingale"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the chemical symbol for sodium?",
+    "options": ["A) S", "B) Na", "C) Sn", "D) K"],
+    "correctAnswerIndex": 1
+  },
+  {
+    "question": "Who directed the movie 'Schindler's List'?",
+    "options": ["A) Steven Spielberg", "B) Quentin Tarantino", "C) Martin Scorsese", "D) Alfred Hitchcock"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the capital of Australia?",
+    "options": ["A) Canberra", "B) Sydney", "C) Melbourne", "D) Brisbane"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "Who wrote 'The Great Gatsby'?",
+    "options": ["A) F. Scott Fitzgerald", "B) Ernest Hemingway", "C) John Steinbeck", "D) Mark Twain"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the chemical symbol for carbon?",
+    "options": ["A) Ca", "B) C", "C) Co", "D) Cr"],
+    "correctAnswerIndex": 1
+  },
+  {
+    "question": "Who discovered electricity?",
+    "options": ["A) Benjamin Franklin", "B) Thomas Edison", "C) Nikola Tesla", "D) Michael Faraday"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the largest desert in the world?",
+    "options": ["A) Sahara Desert", "B) Arabian Desert", "C) Gobi Desert", "D) Antarctic Desert"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "Who painted 'The Last Supper'?",
+    "options": ["A) Leonardo da Vinci", "B) Michelangelo", "C) Raphael", "D) Donatello"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the chemical symbol for iron?",
+    "options": ["A) Ir", "B) Fe", "C) Au", "D) Pb"],
+    "correctAnswerIndex": 1
+  },
+  {
+    "question": "Who discovered America?",
+    "options": ["A) Christopher Columbus", "B) Vasco da Gama", "C) Ferdinand Magellan", "D) Marco Polo"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the smallest country in the world?",
+    "options": ["A) Vatican City", "B) Monaco", "C) Nauru", "D) Tuvalu"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "Who is known as the 'Queen of Soul'?",
+    "options": ["A) Aretha Franklin", "B) Whitney Houston", "C) Diana Ross", "D) Tina Turner"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the chemical symbol for silver?",
+    "options": ["A) Si", "B) Ag", "C) Au", "D) Al"],
+    "correctAnswerIndex": 1
+  },
+  {
+    "question": "Who wrote 'War and Peace'?",
+    "options": ["A) Leo Tolstoy", "B) Fyodor Dostoevsky", "C) Ivan Turgenev", "D) Anton Chekhov"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the capital of Brazil?",
+    "options": ["A) Buenos Aires", "B) Brasilia", "C) Rio de Janeiro", "D) Sao Paulo"],
+    "correctAnswerIndex": 1
+  },
+  {
+    "question": "Who invented the telephone?",
+    "options": ["A) Alexander Graham Bell", "B) Thomas Edison", "C) Nikola Tesla", "D) Guglielmo Marconi"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the chemical symbol for lead?",
+    "options": ["A) L", "B) Le", "C) P", "D) Pb"],
+    "correctAnswerIndex": 3
+  },
+  {
+    "question": "Who painted 'The Persistence of Memory'?",
+    "options": ["A) Salvador Dali", "B) Pablo Picasso", "C) Vincent van Gogh", "D) Claude Monet"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the chemical symbol for helium?",
+    "options": ["A) H", "B) He", "C) H2", "D) He2"],
+    "correctAnswerIndex": 1
+  },
+  {
+    "question": "Who wrote 'The Catcher in the Rye'?",
+    "options": ["A) J.D. Salinger", "B) Ernest Hemingway", "C) F. Scott Fitzgerald", "D) Harper Lee"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the largest organ in the human body?",
+    "options": ["A) Liver", "B) Heart", "C) Skin", "D) Brain"],
+    "correctAnswerIndex": 2
+  },
+  {
+    "question": "Who was the first person to walk on the moon?",
+    "options": ["A) Neil Armstrong", "B) Buzz Aldrin", "C) Alan Shepard", "D) John Glenn"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the chemical symbol for potassium?",
+    "options": ["A) K", "B) Ka", "C) Ke", "D) Ko"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "Who painted 'The Scream'?",
+    "options": ["A) Edvard Munch", "B) Vincent van Gogh", "C) Pablo Picasso", "D) Claude Monet"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the chemical symbol for nitrogen?",
+    "options": ["A) N", "B) Ni", "C) Na", "D) Ne"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "Who wrote 'The Adventures of Tom Sawyer'?",
+    "options": ["A) Mark Twain", "B) Charles Dickens", "C) F. Scott Fitzgerald", "D) Ernest Hemingway"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the hardest natural substance on Earth?",
+    "options": ["A) Diamond", "B) Steel", "C) Titanium", "D) Graphite"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "Who was the first President of the United States?",
+    "options": ["A) George Washington", "B) Thomas Jefferson", "C) Abraham Lincoln", "D) John Adams"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the chemical symbol for mercury?",
+    "options": ["A) Hg", "B) Me", "C) Mg", "D) Mn"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "Who painted 'Guernica'?",
+    "options": ["A) Pablo Picasso", "B) Vincent van Gogh", "C) Leonardo da Vinci", "D) Claude Monet"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "What is the chemical symbol for calcium?",
+    "options": ["A) Ca", "B) Cl", "C) Ce", "D) Cm"],
+    "correctAnswerIndex": 0
+  }
+]
