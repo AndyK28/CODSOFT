@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS courses (
     courseCode VARCHAR(10) PRIMARY KEY,
     title VARCHAR(100),
     description VARCHAR(255),
-    capacity INT
+    spacesLeft INT
 );
 
 CREATE TABLE IF NOT EXISTS course_code (

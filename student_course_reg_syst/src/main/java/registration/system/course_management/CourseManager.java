@@ -43,10 +43,10 @@ public class CourseManager implements ICourseManagement {
 
     @Override
     public void registerForCourse(Student student, Course course) throws SQLException {
-        if (course.getCapacity() > 0) {
+        if (course.getSpacesLeft() > 0) {
             DatabaseManager.registerStudentForCourse(student.studentId(), course.getCourseCode());
             if (DatabaseManager.isStudentRegisteredForCourse(student, course.getCourseCode())) {
-                course.setCapacity(course.getCapacity() - 1);
+                course.setSpacesLeft(course.getSpacesLeft() - 1);
                 course.courseCapacity();
                 System.out.println("You have successfully registered for course: " + course.getTitle());
             }
@@ -57,7 +57,7 @@ public class CourseManager implements ICourseManagement {
     public void deregisterFromCourse(Student student, Course course) throws SQLException {
         DatabaseManager.deregisterStudentFromCourse(student.studentId(), course.getCourseCode());
         if (!DatabaseManager.isStudentRegisteredForCourse(student, course.getCourseCode())) {
-            course.setCapacity(course.getCapacity() + 1);
+            course.setSpacesLeft(course.getSpacesLeft() + 1);
             course.courseCapacity();
             System.out.println("Successfully deregistered from course: " + course.getTitle());
         }

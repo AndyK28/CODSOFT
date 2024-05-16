@@ -15,7 +15,7 @@ public class Course {
     private String courseCode;
     private String title;
     private String description;
-    private int capacity;
+    private int spacesLeft;
     private Schedule schedule;
 
     public Course() {}
@@ -26,18 +26,18 @@ public class Course {
         this.schedule = schedule;
     }
 
-    public Course(String courseCode, String title, String description, int capacity) {
+    public Course(String courseCode, String title, String description, int spacesLeft) {
         this.courseCode = courseCode;
         this.title = title;
         this.description = description;
-        this.capacity = capacity;
+        this.spacesLeft = spacesLeft;
     }
 
-    public Course(String courseCode, String title, String description, int capacity, Schedule schedule) {
+    public Course(String courseCode, String title, String description, int spacesLeft, Schedule schedule) {
         this.courseCode = courseCode;
         this.title = title;
         this.description = description;
-        this.capacity = capacity;
+        this.spacesLeft = spacesLeft;
         this.schedule = schedule;
     }
 
@@ -55,16 +55,16 @@ public class Course {
 
     public Schedule getSchedule() {return schedule;}
 
-    public int getCapacity() {
-        return capacity;
+    public int getSpacesLeft() {
+        return spacesLeft;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setSpacesLeft(int spacesLeft) {
+        this.spacesLeft = spacesLeft;
     }
 
     public void courseCapacity() throws SQLException {
-        DatabaseManager.updateCapacity(this.courseCode, this.capacity);
+        DatabaseManager.updateCapacity(this.courseCode, this.spacesLeft);
     }
 
     public void saveToDatabase() throws SQLException {
@@ -82,7 +82,7 @@ public class Course {
             Course[] courseAArray = mapper.readValue(new File("src/main/resources/courses.json"), Course[].class);
             courses.addAll(Arrays.asList(courseAArray));
         } catch (IOException e) {
-            System.err.println("Error: failed to load courses.sql file.");
+            System.err.println("Error: failed to load courses.sql file.\n" + e.getMessage());
         }
         return courses;
     }
@@ -104,7 +104,7 @@ public class Course {
                 "courseCode='" + courseCode + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", capacity=" + capacity +
+                ", spacesLeft=" + spacesLeft +
                 ", schedule=" + schedule +
                 '}';
     }
