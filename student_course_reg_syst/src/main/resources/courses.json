@@ -1,0 +1,112 @@
+[
+  {
+    "courseCode": "SE101_Intro",
+    "title": "Introduction to Software Engineering",
+    "description": "Fundamental concepts and practices in software engineering.",
+    "capacity": 50,
+    "schedule": {
+      "days": ["Monday", "Wednesday", "Friday"],
+      "startTime": "10:00 AM",
+      "endTime": "12:00 PM"
+    }
+  },
+  {
+    "courseCode": "SE102_Design",
+    "title": "Software Design and Architecture",
+    "description": "Principles and techniques for designing and architecting software systems.",
+    "capacity": 40,
+    "schedule": {
+      "days": ["Tuesday", "Thursday"],
+      "startTime": "9:30 AM",
+      "endTime": "11:30 AM"
+    }
+  },
+  {
+    "courseCode": "SE103_WebDev",
+    "title": "Web Development with JavaScript",
+    "description": "Building web applications using JavaScript, HTML, and CSS.",
+    "capacity": 30,
+    "schedule": {
+      "days": ["Wednesday", "Friday"],
+      "startTime": "2:00 PM",
+      "endTime": "4:00 PM"
+    }
+  },
+  {
+    "courseCode": "SE104_MobileDev",
+    "title": "Mobile App Development with Swift",
+    "description": "Developing iOS applications using the Swift programming language.",
+    "capacity": 35,
+    "schedule": {
+      "days": ["Monday", "Wednesday", "Thursday"],
+      "startTime": "1:00 PM",
+      "endTime": "3:00 PM"
+    }
+  },
+  {
+    "courseCode": "SE105_DataScience",
+    "title": "Data Science with Python",
+    "description": "Introduction to data science and machine learning using Python.",
+    "capacity": 45,
+    "schedule": {
+      "days": ["Tuesday", "Thursday"],
+      "startTime": "3:30 PM",
+      "endTime": "5:30 PM"
+    }
+  },
+  {
+    "courseCode": "SE106_JavaEE",
+    "title": "Java Enterprise Development",
+    "description": "Building enterprise applications using Java EE technologies.",
+    "capacity": 25,
+    "schedule": {
+      "days": ["Monday", "Wednesday", "Friday"],
+      "startTime": "9:00 AM",
+      "endTime": "11:00 AM"
+    }
+  },
+  {
+    "courseCode": "SE107_FullStack",
+    "title": "Full-Stack Development with Node.js",
+    "description": "Developing full-stack web applications using Node.js, Express, and MongoDB.",
+    "capacity": 30,
+    "schedule": {
+      "days": ["Tuesday", "Thursday"],
+      "startTime": "1:30 PM",
+      "endTime": "3:30 PM"
+    }
+  },
+  {
+    "courseCode": "SE108_CSharpUnity",
+    "title": "C# Programming for Unity Game Development",
+    "description": "Learning C# programming for game development with Unity.",
+    "capacity": 20,
+    "schedule": {
+      "days": ["Monday", "Wednesday"],
+      "startTime": "11:00 AM",
+      "endTime": "1:00 PM"
+    }
+  },
+  {
+    "courseCode": "SE109_RubyRails",
+    "title": "Ruby on Rails Web Development",
+    "description": "Building web applications with Ruby on Rails framework.",
+    "capacity": 30,
+    "schedule": {
+      "days": ["Wednesday", "Friday"],
+      "startTime": "10:30 AM",
+      "endTime": "12:30 PM"
+    }
+  },
+  {
+    "courseCode": "SE110_Angular",
+    "title": "Angular Front-End Development",
+    "description": "Developing modern web applications with Angular framework.",
+    "capacity": 35,
+    "schedule": {
+      "days": ["Thursday", "Friday"],
+      "startTime": "3:00 PM",
+      "endTime": "5:00 PM"
+    }
+  }
+]
