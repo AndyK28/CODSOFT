@@ -3,7 +3,7 @@ package student.grade.calculator;
 import java.util.Scanner;
 
 public class GradeCalculator {
-    private final int[] marks;
+    private int[] marks;
     private int totalMarks;
     private double averageMarksPercentage;
     private char grade;
@@ -13,6 +13,38 @@ public class GradeCalculator {
         totalMarks = 0;
         averageMarksPercentage = 0;
         grade = ' ';
+    }
+
+    public int[] getMarks() {
+        return marks;
+    }
+
+    public int getTotalMarks() {
+        return totalMarks;
+    }
+
+    public double getAverageMarksPercentage() {
+        return averageMarksPercentage;
+    }
+
+    public char getGrade() {
+        return grade;
+    }
+
+    public void setMarks(int[] marks) {
+        this.marks = marks;
+    }
+
+    public void setTotalMarks(int totalMarks) {
+        this.totalMarks = totalMarks;
+    }
+
+    public void setAverageMarksPercentage(double averageMarksPercentage) {
+        this.averageMarksPercentage = averageMarksPercentage;
+    }
+
+    public void setGrade(char grade) {
+        this.grade = grade;
     }
 
     public void inputMarks(Scanner scanner) {
