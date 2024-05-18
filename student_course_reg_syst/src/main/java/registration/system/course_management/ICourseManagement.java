@@ -8,6 +8,7 @@ import java.util.List;
 public interface ICourseManagement {
     void checkAvailableCourses() throws SQLException;
     void checkRegisteredCourses(Student student) throws SQLException;
+    void checkSchedule(Student student) throws SQLException;
     void registerForCourse(Student student, Course course) throws SQLException;
     void deregisterFromCourse(Student student, Course course) throws SQLException;
 }

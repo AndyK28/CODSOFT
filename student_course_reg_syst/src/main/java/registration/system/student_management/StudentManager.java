@@ -9,12 +9,17 @@ import java.util.List;
 import java.util.Scanner;
 
 public class StudentManager extends CourseManager implements IStudentManagement {
-    private final Scanner scanner;
+    private Scanner scanner;
     private boolean exit = false;
 
     public StudentManager() {
         this.scanner = new Scanner(System.in);
     }
+
+    public void setScanner(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
 
     public void start() {
         System.out.println("Welcome to the Student Registration System");
@@ -25,7 +30,7 @@ public class StudentManager extends CourseManager implements IStudentManagement 
         }
     }
 
-    private void processLogin() throws SQLException {
+    public void processLogin() throws SQLException {
         System.out.println("Are you a registered student? (y/n): ");
         String isRegistered = scanner.nextLine().trim().toLowerCase();
 
@@ -49,8 +54,8 @@ public class StudentManager extends CourseManager implements IStudentManagement 
             if (student != null) {
                 System.out.println("Welcome back " + student.name() + "!");
                 displayMenu(student);
-            } else System.err.println("Student not found!");
-        } else processLogin();
+            }
+        } else { System.err.println("Student not found! Please enter valid studentId i.e SE12345"); processLogin(); }
     }
 
     @Override
@@ -71,14 +76,32 @@ public class StudentManager extends CourseManager implements IStudentManagement 
         } else System.err.println("Error: failed to create profile!");
     }
 
-    private String enterName() {
-        System.out.print("Enter your name       : ");
-        return scanner.nextLine();
+    public String enterName() {
+        String name;
+        while (true) {
+            System.out.print("Enter your name       : ");
+            name = scanner.nextLine();
+            if (name.matches("^[a-zA-Z]+$")) {
+                break;
+            } else {
+                System.err.println("Invalid input. Name should contain only letters. Please try again.");
+            }
+        }
+        return name;
     }
 
-    private String enterSurname() {
-        System.out.print("Enter your surname    : ");
-        return scanner.nextLine();
+    public String enterSurname() {
+        String surname;
+        while (true) {
+            System.out.print("Enter your surname    : ");
+            surname = scanner.nextLine();
+            if (surname.matches("^[a-zA-Z]+$")) {
+                break;
+            } else {
+                System.err.println("Invalid input. Surname should contain only letters. Please try again.");
+            }
+        }
+        return surname;
     }
 
     @Override
@@ -89,18 +112,21 @@ public class StudentManager extends CourseManager implements IStudentManagement 
                 studentId = "SE" + String.format("%05d", (int) (Math.random() * 100000));
             } while (DatabaseManager.isValidStudentId(studentId));
         } catch (SQLException e) {
-            System.err.println("Error: failed to generate student ID: " + e.getMessage());
+            System.err.println("Error: failed to generate student ID:\n" + e.getMessage());
             studentId = "SE00000";
         }
         return studentId;
     }
 
     private void printOptions() {
-        System.out.println("1. Check for available courses\n" +
-                "2. Check for courses registered for\n" +
-                "3. Register for a course\n" +
-                "4. Deregister from a course\n" +
-                "5. Exit\n"
+        System.out.println("""
+                1. Check for available courses
+                2. Check for registered courses
+                3. Check Schedule
+                4. Register for a course
+                5. Deregister from a course
+                6. Exit
+                """
         );
     }
 
@@ -115,7 +141,7 @@ public class StudentManager extends CourseManager implements IStudentManagement 
         return null;
     }
 
-    public void register(Student student) throws SQLException {
+    private void register(Student student) throws SQLException {
         String message = "Enter course code to register: ";
         List<Course> courseList = DatabaseManager.getAllCourses();
         Course regCourse = promptForCourse(courseList, message);
@@ -126,7 +152,7 @@ public class StudentManager extends CourseManager implements IStudentManagement 
         } else System.err.println("You cannot register for same course twice!");
     }
 
-    public void deregister(Student student) throws SQLException {
+    private void deregister(Student student) throws SQLException {
         String message = "Enter course code to deregister: ";
         List<Course> courseList1 = DatabaseManager.getAllCourses();
         Course deregCourse = promptForCourse(courseList1, message);
@@ -141,20 +167,34 @@ public class StudentManager extends CourseManager implements IStudentManagement 
         switch (choice) {
             case 1: checkAvailableCourses(); break;
             case 2: checkRegisteredCourses(student); break;
-            case 3: register(student); break;
-            case 4: deregister(student); break;
-            case 5: System.out.println("Exiting program..."); exit = true; break;
+            case 3: checkSchedule(student); break;
+            case 4: register(student); break;
+            case 5: deregister(student); break;
+            case 6: System.out.println("Exiting program..."); exit = true; break;
             default: System.err.println("Invalid choice. Please choose one of the following options:");
         }
 
         if (!exit) {
             System.out.println("\nDo you want to continue? (y/n)");
-            String continueChoice = scanner.nextLine();
-            if (!continueChoice.equalsIgnoreCase("y")) {
+            String continueChoice = getYesOrNoInput();
+            if (continueChoice.equalsIgnoreCase("n")) {
                 System.out.println("Session Complete.\nGoodbye!");
                 exit = true;
             }
         }
+    }
+
+    public String getYesOrNoInput() {
+        String input;
+        while (true) {
+            input = scanner.nextLine();
+            if (input.equalsIgnoreCase("y") || input.equalsIgnoreCase("n")) {
+                break;
+            } else {
+                System.err.println("Invalid input. Please enter 'y' or 'n'.");
+            }
+        }
+        return input;
     }
 
     private void displayMenu(Student student) throws SQLException {

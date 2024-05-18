@@ -13,16 +13,18 @@ public class CourseManager implements ICourseManagement {
 
         System.out.println(message);
         for (Course course : courses) {
-            Schedule schedule = course.getSchedule();
-            System.out.println(count + ". " + course.getCourseCode() + " - " + course.getTitle() + "\n" +
-                    "Schedule:\n" +
-                    "Days: " + schedule.days() + "\n" +
-                    "Start Time - " + schedule.startTime() + "\n" +
-                    "End Time - " + schedule.endTime()
-            );
+            System.out.println(count + ". " + course.getCourseCode() + " - " + course.getTitle());
             count++;
         }
     }
+
+    public void printSchedule(Schedule schedule, String courseCode) {
+        System.out.println("Schedule for " + courseCode + ":\n" +
+                "Days: " + schedule.days() + "\n" +
+                "Start Time - " + schedule.startTime() + "\n" +
+                "End Time - " + schedule.endTime());
+    }
+
     @Override
     public void checkAvailableCourses() throws SQLException {
         List<Course> availableCourses = DatabaseManager.getAvailableCourses();
@@ -39,6 +41,21 @@ public class CourseManager implements ICourseManagement {
             String message = "Registered course(s):";
             courseList(message, registeredCourses);
         } else System.out.println("You are not registered for a course.");
+    }
+
+    @Override
+    public void checkSchedule(Student student) throws SQLException {
+        List<Course> courses = DatabaseManager.getRegisteredCourses(student);
+        if (!courses.isEmpty()) {
+            for (Course course : courses) {
+                String courseCode = course.getCourseCode();
+                Schedule schedule = DatabaseManager.getScheduleByCourseCode(courseCode);
+
+                if (schedule != null) {
+                    printSchedule(schedule, courseCode);
+                }
+            }
+        } else System.err.println("Schedule not found! You have no registered courses.");
     }
 
     @Override

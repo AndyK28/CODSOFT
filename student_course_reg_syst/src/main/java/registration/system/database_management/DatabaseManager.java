@@ -5,6 +5,7 @@ import registration.system.course_management.schedule.Schedule;
 import registration.system.student_management.Student;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
@@ -13,18 +14,34 @@ import java.util.Collections;
 import java.util.List;
 
 public class DatabaseManager {
-    private static final String url = "jdbc:sqlite:student_registration.db";
+    public static String URL = "jdbc:sqlite:registration.db";
+    public static String SCHEMA_PATH = "src/main/resources/database.sql";
+    public static BufferedReader reader;
 
-    public static void connect() throws SQLException {
-        Connection conn = DriverManager.getConnection(url);
-        conn.close();
+    static {
+        try {
+            reader = new BufferedReader(new FileReader(SCHEMA_PATH));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public static void createTables() throws SQLException, IOException {
-        try(Connection conn = DriverManager.getConnection(url)) {
-            BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/database.sql"));
-            processSqlStatements(conn, reader);
-        }
+    // Setter for test purposes
+    public static void setURL(String databaseUrl) {
+        URL = databaseUrl;
+    }
+
+    // Setter for test purposes
+    public static void setSchemaPath(String schemaPath) {
+        SCHEMA_PATH = schemaPath;
+    }
+
+    public static Connection connect() throws SQLException {
+        return DriverManager.getConnection(URL);
+    }
+
+    public static void createTables(Connection conn) throws SQLException, IOException {
+        processSqlStatements(conn, reader);
     }
 
     public static void processSqlStatements(Connection conn, BufferedReader reader) throws IOException, SQLException {
@@ -39,11 +56,10 @@ public class DatabaseManager {
                 sqlBuilder.setLength(0);
             }
         }
-        createTrigger();
     }
 
     public static void createTrigger() throws SQLException {
-        try(Connection conn = DriverManager.getConnection(url)) {
+        try(Connection conn = connect()) {
             String trigger = "CREATE TRIGGER IF NOT EXISTS insert_course_codes " +
                     "AFTER INSERT ON courses " +
                     "FOR EACH ROW " +
@@ -58,7 +74,7 @@ public class DatabaseManager {
     }
 
     public static void insertCourse(Course course) throws SQLException {
-        try(Connection conn = DriverManager.getConnection(url)) {
+        try(Connection conn = connect()) {
             String sql = "INSERT INTO courses (courseCode, title, description, spacesLeft) VALUES (?, ?, ?, ?)";
             try(PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, course.getCourseCode());
@@ -68,10 +84,11 @@ public class DatabaseManager {
                 stmt.executeUpdate();
             }
         }
+        createTrigger();
     }
 
     public static void insertSchedule(String courseCode, Schedule schedule) throws SQLException {
-        try (Connection conn = DriverManager.getConnection(url)) {
+        try (Connection conn = connect()) {
             String sql = "INSERT INTO schedule (courseCode, days, startTime, endTime) VALUES (?, ?, ?, ?)";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, courseCode);
@@ -83,8 +100,29 @@ public class DatabaseManager {
         }
     }
 
+    // Sample Data for testing purposes
+    public static void insertSampleData(Connection conn) throws SQLException {
+        String insertCourse = "INSERT INTO courses (courseCode, title, description, spacesLeft) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(insertCourse)) {
+            stmt.setString(1, "CS101");
+            stmt.setString(2, "Introduction to Computer Science");
+            stmt.setString(3, "Basics of CS");
+            stmt.setInt(4, 100);
+            stmt.executeUpdate();
+        }
+
+        String insertSchedule = "INSERT INTO schedule (courseCode, days, startTime, endTime) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(insertSchedule)) {
+            stmt.setString(1, "CS101");
+            stmt.setString(2, "Monday");
+            stmt.setString(3, "10:00");
+            stmt.setString(4, "12:00");
+            stmt.executeUpdate();
+        }
+    }
+
     public static void updateCapacity(String courseCode, int spacesLeft) throws SQLException {
-        try(Connection conn = DriverManager.getConnection(url)) {
+        try(Connection conn = connect()) {
             String sql = "UPDATE courses SET spacesLeft = ? WHERE courseCode = ?";
             try(PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setInt(1, spacesLeft);
@@ -94,63 +132,50 @@ public class DatabaseManager {
         }
     }
 
-    public static List<Course> getAllCourses() throws SQLException {
+    public static List<Course> getCoursesFromResultSet(Connection conn, String sql) throws SQLException {
         List<Course> courses = new ArrayList<>();
-        try(Connection conn = DriverManager.getConnection(url)) {
-            String sql = "SELECT c.courseCode, c.title, c.description, c.spacesLeft, s.days, s.startTime, s.endTime " +
-                    "FROM courses c " +
-                    "LEFT JOIN schedule s ON c.courseCode = s.courseCode";
-            try(PreparedStatement stmt = conn.prepareStatement(sql)) {
-                ResultSet rs = stmt.executeQuery();
-                while (rs.next()) {
-                    String courseCode = rs.getString("courseCode");
-                    String title = rs.getString("title");
-                    String description = rs.getString("description");
-                    int spacesLeft = rs.getInt("spacesLeft");
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String courseCode = rs.getString("courseCode");
+                String title = rs.getString("title");
+                String description = rs.getString("description");
+                int spacesLeft = rs.getInt("spacesLeft");
 
-                    String days = rs.getString("days");
-                    String startTime = rs.getString("startTime");
-                    String endTime = rs.getString("endTime");
+                String days = rs.getString("days");
+                String startTime = rs.getString("startTime");
+                String endTime = rs.getString("endTime");
 
-                    Schedule schedule = new Schedule(Collections.singletonList(days), startTime, endTime);
-                    Course course = new Course(courseCode, title, description, spacesLeft, schedule);
-                    courses.add(course);
-                }
+                Schedule schedule = new Schedule(Collections.singletonList(days), startTime, endTime);
+                Course course = new Course(courseCode, title, description, spacesLeft, schedule);
+                courses.add(course);
             }
         }
         return courses;
     }
 
+
+    public static List<Course> getAllCourses() throws SQLException {
+        try(Connection conn = connect()) {
+            String sql = "SELECT c.courseCode, c.title, c.description, c.spacesLeft, s.days, s.startTime, s.endTime " +
+                    "FROM courses c " +
+                    "LEFT JOIN schedule s ON c.courseCode = s.courseCode";
+            return getCoursesFromResultSet(conn, sql);
+        }
+    }
+
     public static List<Course> getAvailableCourses() throws SQLException {
-        List<Course> courses = new ArrayList<>();
-        try(Connection conn = DriverManager.getConnection(url)) {
+        try(Connection conn = connect()) {
             String sql = "SELECT c.courseCode, c.title, c.description, c.spacesLeft, s.days, s.startTime, s.endTime " +
                     "FROM courses c " +
                     "JOIN schedule s ON c.courseCode = s.courseCode " +
                     "WHERE c.spacesLeft > 0";
-            try(PreparedStatement stmt = conn.prepareStatement(sql)) {
-                ResultSet rs = stmt.executeQuery();
-                while (rs.next()) {
-                    String courseCode = rs.getString("courseCode");
-                    String title = rs.getString("title");
-                    String description = rs.getString("description");
-                    int spacesLeft = rs.getInt("spacesLeft");
-
-                    String days = rs.getString("days");
-                    String startTime = rs.getString("startTime");
-                    String endTime = rs.getString("endTime");
-
-                    Schedule schedule = new Schedule(Collections.singletonList(days), startTime, endTime);
-                    Course course = new Course(courseCode, title, description, spacesLeft, schedule);
-                    courses.add(course);
-                }
-            }
+            return getCoursesFromResultSet(conn, sql);
         }
-        return courses;
     }
 
     public static void saveStudent(Student student) throws SQLException {
-        try(Connection conn = DriverManager.getConnection(url)) {
+        try(Connection conn = connect()) {
             String sql = "INSERT INTO students (studentID, name, surname) VALUES (?, ?, ?)";
             try(PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, student.studentId());
@@ -162,7 +187,7 @@ public class DatabaseManager {
     }
 
     public static Course getCourseByCourseCode(String courseCode) throws SQLException {
-        try (Connection conn = DriverManager.getConnection(url)) {
+        try (Connection conn = connect()) {
             String sql = "SELECT * FROM courses WHERE courseCode = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, courseCode);
@@ -179,8 +204,27 @@ public class DatabaseManager {
         return null;
     }
 
+    public static Schedule getScheduleByCourseCode(String courseCode) throws SQLException {
+        try (Connection conn = connect()) {
+            String sql = "SELECT * FROM schedule WHERE courseCode = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, courseCode);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        String days = rs.getString("days");
+                        String startTime = rs.getString("startTime");
+                        String endTime = rs.getString("endTime");
+
+                        return new Schedule(Collections.singletonList(days), startTime, endTime);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     public static Student getStudentById(String studentId) throws SQLException {
-        try(Connection conn = DriverManager.getConnection(url)) {
+        try(Connection conn = connect()) {
             String sql = "SELECT * FROM students WHERE studentID = ?";
             try(PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, studentId);
@@ -198,7 +242,7 @@ public class DatabaseManager {
     }
 
     public static boolean isValidStudentId(String studentId) throws  SQLException {
-        try(Connection conn = DriverManager.getConnection(url)) {
+        try(Connection conn = connect()) {
             String sql  = "SELECT COUNT(*) AS count FROM students WHERE studentID = ?";
             try(PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, studentId);
@@ -212,9 +256,8 @@ public class DatabaseManager {
         return false;
     }
 
-
     public static void registerStudentForCourse(String studentId, String courseCode) throws SQLException {
-        try(Connection conn = DriverManager.getConnection(url)) {
+        try(Connection conn = connect()) {
             String sql = "INSERT INTO registrations (studentID, courseCode) VALUES (?, ?)";
             try(PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, studentId);
@@ -231,7 +274,7 @@ public class DatabaseManager {
                 "INNER JOIN courses c ON r.courseCode = c.courseCode " +
                 "INNER JOIN schedule s ON r.courseCode = s.courseCode " +
                 "WHERE r.studentID = ?";
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, student.studentId());
             try (ResultSet rs = stmt.executeQuery()) {
@@ -253,7 +296,7 @@ public class DatabaseManager {
     }
 
     public static boolean isStudentRegisteredForCourse(Student student, String courseCode) throws SQLException {
-        try (Connection conn = DriverManager.getConnection(url)) {
+        try (Connection conn = connect()) {
             String sql = "SELECT COUNT(*) AS count FROM registrations WHERE studentID = ? AND courseCode = ?";
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, student.studentId());
@@ -269,7 +312,7 @@ public class DatabaseManager {
     }
 
     public static void deregisterStudentFromCourse(String studentId, String courseCode) throws SQLException {
-        try(Connection conn = DriverManager.getConnection(url)) {
+        try(Connection conn = connect()) {
             String sql = "DELETE FROM registrations WHERE studentID = ? AND courseCode = ?";
             try(PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, studentId);
