@@ -12,50 +12,11 @@ public class StudentManager extends CourseManager implements IStudentManagement 
     private Scanner scanner;
     private boolean exit = false;
 
+    /**
+     * Constructs a StudentManager object with a scanner for user input.
+     */
     public StudentManager() {
         this.scanner = new Scanner(System.in);
-    }
-
-    public void setScanner(Scanner scanner) {
-        this.scanner = scanner;
-    }
-
-
-    public void start() {
-        System.out.println("Welcome to the Student Registration System");
-        try {
-            processLogin();
-        } catch (SQLException e ) {
-            System.err.println("An error occurred while trying to process login: " + e.getMessage());
-        }
-    }
-
-    public void processLogin() throws SQLException {
-        System.out.println("Are you a registered student? (y/n): ");
-        String isRegistered = scanner.nextLine().trim().toLowerCase();
-
-        if (isRegistered.equals("y")) {
-            processReturningUserLogin();
-        } else if (isRegistered.equals("n")) {
-            processNewUserLogin();
-        } else {
-            System.err.println("Invalid response, Please try again.");
-            processLogin();
-        }
-    }
-
-    @Override
-    public void processReturningUserLogin() throws SQLException {
-        System.out.println("Please enter student ID: ");
-        String studentId = scanner.nextLine().toUpperCase();
-
-        if (DatabaseManager.isValidStudentId(studentId)) {
-            Student student = DatabaseManager.getStudentById(studentId);
-            if (student != null) {
-                System.out.println("Welcome back " + student.name() + "!");
-                displayMenu(student);
-            }
-        } else { System.err.println("Student not found! Please enter valid studentId i.e SE12345"); processLogin(); }
     }
 
     @Override
@@ -76,32 +37,18 @@ public class StudentManager extends CourseManager implements IStudentManagement 
         } else System.err.println("Error: failed to create profile!");
     }
 
-    public String enterName() {
-        String name;
-        while (true) {
-            System.out.print("Enter your name       : ");
-            name = scanner.nextLine();
-            if (name.matches("^[a-zA-Z]+$")) {
-                break;
-            } else {
-                System.err.println("Invalid input. Name should contain only letters. Please try again.");
-            }
-        }
-        return name;
-    }
+    @Override
+    public void processReturningUserLogin() throws SQLException {
+        System.out.println("Please enter student ID: ");
+        String studentId = scanner.nextLine().toUpperCase();
 
-    public String enterSurname() {
-        String surname;
-        while (true) {
-            System.out.print("Enter your surname    : ");
-            surname = scanner.nextLine();
-            if (surname.matches("^[a-zA-Z]+$")) {
-                break;
-            } else {
-                System.err.println("Invalid input. Surname should contain only letters. Please try again.");
+        if (DatabaseManager.isValidStudentId(studentId)) {
+            Student student = DatabaseManager.getStudentById(studentId);
+            if (student != null) {
+                System.out.println("Welcome back " + student.name() + "!");
+                displayMenu(student);
             }
-        }
-        return surname;
+        } else { System.err.println("Student not found! Please enter valid studentId i.e SE12345"); processLogin(); }
     }
 
     @Override
@@ -118,6 +65,83 @@ public class StudentManager extends CourseManager implements IStudentManagement 
         return studentId;
     }
 
+    /**
+     * Sets the scanner for user input when testing.
+     * @param scanner the scanner to be set
+     */
+    public void setScanner(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
+    /**
+     * Starts the student registration system by processing login.
+     */
+    public void start() {
+        System.out.println("Welcome to the Student Registration System");
+        try {
+            processLogin();
+        } catch (SQLException e ) {
+            System.err.println("An error occurred while trying to process login: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Processes the login based on user input.
+     * @throws SQLException if a database access error occurs
+     */
+    public void processLogin() throws SQLException {
+        System.out.println("Are you a registered student? (y/n): ");
+        String isRegistered = scanner.nextLine().trim().toLowerCase();
+
+        if (isRegistered.equals("y")) {
+            processReturningUserLogin();
+        } else if (isRegistered.equals("n")) {
+            processNewUserLogin();
+        } else {
+            System.err.println("Invalid response, Please try again.");
+            processLogin();
+        }
+    }
+
+    /**
+     * Prompts the user to enter their name.
+     * @return the entered name
+     */
+    public String enterName() {
+        String name;
+        while (true) {
+            System.out.print("Enter your name       : ");
+            name = scanner.nextLine();
+            if (name.matches("^[a-zA-Z]+$")) {
+                break;
+            } else {
+                System.err.println("Invalid input. Name should contain only letters. Please try again.");
+            }
+        }
+        return name;
+    }
+
+    /**
+     * Prompts the user to enter their surname.
+     * @return the entered surname
+     */
+    public String enterSurname() {
+        String surname;
+        while (true) {
+            System.out.print("Enter your surname    : ");
+            surname = scanner.nextLine();
+            if (surname.matches("^[a-zA-Z]+$")) {
+                break;
+            } else {
+                System.err.println("Invalid input. Surname should contain only letters. Please try again.");
+            }
+        }
+        return surname;
+    }
+
+    /**
+     * Prints the options menu for the student.
+     */
     private void printOptions() {
         System.out.println("""
                 1. Check for available courses
@@ -130,6 +154,12 @@ public class StudentManager extends CourseManager implements IStudentManagement 
         );
     }
 
+    /**
+     * Prompts the user for a course code and returns the corresponding course.
+     * @param courses the list of courses to choose from
+     * @param promptMessage the prompt message
+     * @return the chosen course or null if not found
+     */
     public Course promptForCourse(List<Course> courses, String promptMessage) {
         System.out.println(promptMessage);
         String courseCode = scanner.nextLine();
@@ -141,6 +171,11 @@ public class StudentManager extends CourseManager implements IStudentManagement 
         return null;
     }
 
+    /**
+     * Registers the student for a course.
+     * @param student the student to register
+     * @throws SQLException if a database access error occurs
+     */
     private void register(Student student) throws SQLException {
         String message = "Enter course code to register: ";
         List<Course> courseList = DatabaseManager.getAllCourses();
@@ -152,6 +187,11 @@ public class StudentManager extends CourseManager implements IStudentManagement 
         } else System.err.println("You cannot register for same course twice!");
     }
 
+    /**
+     * Deregisters the student from a course.
+     * @param student the student to deregister
+     * @throws SQLException if a database access error occurs
+     */
     private void deregister(Student student) throws SQLException {
         String message = "Enter course code to deregister: ";
         List<Course> courseList1 = DatabaseManager.getAllCourses();
@@ -162,6 +202,12 @@ public class StudentManager extends CourseManager implements IStudentManagement 
         } else System.err.println("Course not found.");
     }
 
+    /**
+     * Handles the user's choice of action.
+     * @param student the current student
+     * @param userChoice the user's choice
+     * @throws SQLException if a database access error occurs
+     */
     public void userChoice(Student student, String userChoice) throws SQLException {
         int choice = Integer.parseInt(userChoice);
         switch (choice) {
@@ -184,6 +230,10 @@ public class StudentManager extends CourseManager implements IStudentManagement 
         }
     }
 
+    /**
+     * Retrieves a yes or no input from the user.
+     * @return "y" for yes, "n" for no
+     */
     public String getYesOrNoInput() {
         String input;
         while (true) {
@@ -197,6 +247,11 @@ public class StudentManager extends CourseManager implements IStudentManagement 
         return input;
     }
 
+    /**
+     * Displays the menu for the student and handles user input.
+     * @param student the current student
+     * @throws SQLException if a database access error occurs
+     */
     private void displayMenu(Student student) throws SQLException {
         while (!exit) {
             System.out.println("\nPlease choose one of the following options:");
