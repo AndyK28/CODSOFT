@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuizApp {
-
     public static List<Question> readQuestions() {
         List<Question> questions = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();

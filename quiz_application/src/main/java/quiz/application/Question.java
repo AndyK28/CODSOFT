@@ -1,9 +1,15 @@
 package quiz.application;
 
 public class Question {
-    private String question;
-    private String[] options;
-    private int correctAnswerIndex;
+    private final String question;
+    private final String[] options;
+    private final int correctAnswerIndex;
+
+    public Question(String question, String[] options, int correctAnswerIndex) {
+        this.question = question;
+        this.options = options;
+        this.correctAnswerIndex = correctAnswerIndex;
+    }
 
     public String getQuestion() {
         return question;
