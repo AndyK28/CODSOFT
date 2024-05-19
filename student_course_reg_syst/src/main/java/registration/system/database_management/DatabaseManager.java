@@ -18,6 +18,10 @@ public class DatabaseManager {
     public static String SCHEMA_PATH = "src/main/resources/database.sql";
     public static BufferedReader reader;
 
+    /**
+     * Initializes the database schema reader with the path specified in SCHEMA_PATH.
+     * This is done once when the class is loaded.
+     */
     static {
         try {
             reader = new BufferedReader(new FileReader(SCHEMA_PATH));
@@ -26,24 +30,48 @@ public class DatabaseManager {
         }
     }
 
-    // Setter for test purposes
+    /**
+     * Setter for the database URL, primarily for test purposes.
+     * @param databaseUrl the new URL to set
+     */
     public static void setURL(String databaseUrl) {
         URL = databaseUrl;
     }
 
-    // Setter for test purposes
+    /**
+     * Setter for the database schema path, primarily for test purposes.
+     * @param schemaPath the new schema path to set
+     */
     public static void setSchemaPath(String schemaPath) {
         SCHEMA_PATH = schemaPath;
     }
 
+    /**
+     * Establishes a connection to the database using the URL.
+     * @return a Connection object representing the database connection
+     * @throws SQLException if a database access error occurs
+     */
     public static Connection connect() throws SQLException {
         return DriverManager.getConnection(URL);
     }
 
+    /**
+     * Creates database tables using the provided connection and schema reader.
+     * @param conn the connection to the database
+     * @throws SQLException if a database access error occurs
+     * @throws IOException if an I/O error occurs
+     */
     public static void createTables(Connection conn) throws SQLException, IOException {
         processSqlStatements(conn, reader);
     }
 
+    /**
+     * Processes SQL statements read from the provided reader and executes them using the connection.
+     * @param conn the connection to the database
+     * @param reader the reader for SQL statements
+     * @throws IOException if an I/O error occurs
+     * @throws SQLException if a database access error occurs
+     */
     public static void processSqlStatements(Connection conn, BufferedReader reader) throws IOException, SQLException {
         StringBuilder sqlBuilder = new StringBuilder();
         String line;
@@ -58,6 +86,10 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Creates a trigger in the database to insert course codes into another table after course insertion.
+     * @throws SQLException if a database access error occurs
+     */
     public static void createTrigger() throws SQLException {
         try(Connection conn = connect()) {
             String trigger = "CREATE TRIGGER IF NOT EXISTS insert_course_codes " +
@@ -73,6 +105,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Inserts a course into the database.
+     * @param course the course to insert
+     * @throws SQLException if a database access error occurs
+     */
     public static void insertCourse(Course course) throws SQLException {
         try(Connection conn = connect()) {
             String sql = "INSERT INTO courses (courseCode, title, description, spacesLeft) VALUES (?, ?, ?, ?)";
@@ -87,6 +124,12 @@ public class DatabaseManager {
         createTrigger();
     }
 
+    /**
+     * Inserts a schedule for a course into the database.
+     * @param courseCode the code of the course
+     * @param schedule the schedule to insert
+     * @throws SQLException if a database access error occurs
+     */
     public static void insertSchedule(String courseCode, Schedule schedule) throws SQLException {
         try (Connection conn = connect()) {
             String sql = "INSERT INTO schedule (courseCode, days, startTime, endTime) VALUES (?, ?, ?, ?)";
@@ -100,7 +143,11 @@ public class DatabaseManager {
         }
     }
 
-    // Sample Data for testing purposes
+    /**
+     * Inserts sample data into the database for testing purposes.
+     * @param conn the connection to the database
+     * @throws SQLException if a database access error occurs
+     */
     public static void insertSampleData(Connection conn) throws SQLException {
         String insertCourse = "INSERT INTO courses (courseCode, title, description, spacesLeft) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(insertCourse)) {
@@ -121,6 +168,12 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Updates the capacity of a course in the database.
+     * @param courseCode the code of the course
+     * @param spacesLeft the updated number of spaces left
+     * @throws SQLException if a database access error occurs
+     */
     public static void updateCapacity(String courseCode, int spacesLeft) throws SQLException {
         try(Connection conn = connect()) {
             String sql = "UPDATE courses SET spacesLeft = ? WHERE courseCode = ?";
@@ -132,6 +185,13 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Retrieves a list of courses from a ResultSet obtained from the database.
+     * @param conn the connection to the database
+     * @param sql the SQL query to execute
+     * @return a list of courses retrieved from the ResultSet
+     * @throws SQLException if a database access error occurs
+     */
     public static List<Course> getCoursesFromResultSet(Connection conn, String sql) throws SQLException {
         List<Course> courses = new ArrayList<>();
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -154,7 +214,11 @@ public class DatabaseManager {
         return courses;
     }
 
-
+    /**
+     * Retrieves all courses from the database.
+     * @return a list of all courses in the database
+     * @throws SQLException if a database access error occurs
+     */
     public static List<Course> getAllCourses() throws SQLException {
         try(Connection conn = connect()) {
             String sql = "SELECT c.courseCode, c.title, c.description, c.spacesLeft, s.days, s.startTime, s.endTime " +
@@ -164,6 +228,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Retrieves available courses (courses with spaces left) from the database.
+     * @return a list of available courses
+     * @throws SQLException if a database access error occurs
+     */
     public static List<Course> getAvailableCourses() throws SQLException {
         try(Connection conn = connect()) {
             String sql = "SELECT c.courseCode, c.title, c.description, c.spacesLeft, s.days, s.startTime, s.endTime " +
@@ -174,6 +243,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Saves a student to the database.
+     * @param student the student to save
+     * @throws SQLException if a database access error occurs
+     */
     public static void saveStudent(Student student) throws SQLException {
         try(Connection conn = connect()) {
             String sql = "INSERT INTO students (studentID, name, surname) VALUES (?, ?, ?)";
@@ -186,6 +260,12 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Retrieves a course from the database by its course code.
+     * @param courseCode the course code
+     * @return the course with the specified course code, or null if not found
+     * @throws SQLException if a database access error occurs
+     */
     public static Course getCourseByCourseCode(String courseCode) throws SQLException {
         try (Connection conn = connect()) {
             String sql = "SELECT * FROM courses WHERE courseCode = ?";
@@ -204,6 +284,12 @@ public class DatabaseManager {
         return null;
     }
 
+    /**
+     * Retrieves the schedule of a course from the database by its course code.
+     * @param courseCode the course code
+     * @return the schedule of the course, or null if not found
+     * @throws SQLException if a database access error occurs
+     */
     public static Schedule getScheduleByCourseCode(String courseCode) throws SQLException {
         try (Connection conn = connect()) {
             String sql = "SELECT * FROM schedule WHERE courseCode = ?";
@@ -214,7 +300,6 @@ public class DatabaseManager {
                         String days = rs.getString("days");
                         String startTime = rs.getString("startTime");
                         String endTime = rs.getString("endTime");
-
                         return new Schedule(Collections.singletonList(days), startTime, endTime);
                     }
                 }
@@ -223,6 +308,12 @@ public class DatabaseManager {
         return null;
     }
 
+    /**
+     * Retrieves a student from the database by their ID.
+     * @param studentId the ID of the student
+     * @return the student with the specified ID, or null if not found
+     * @throws SQLException if a database access error occurs
+     */
     public static Student getStudentById(String studentId) throws SQLException {
         try(Connection conn = connect()) {
             String sql = "SELECT * FROM students WHERE studentID = ?";
@@ -241,6 +332,12 @@ public class DatabaseManager {
         return null;
     }
 
+    /**
+     * Checks if a student ID is valid (exists in the database).
+     * @param studentId the student ID to check
+     * @return true if the student ID is valid, otherwise false
+     * @throws SQLException if a database access error occurs
+     */
     public static boolean isValidStudentId(String studentId) throws  SQLException {
         try(Connection conn = connect()) {
             String sql  = "SELECT COUNT(*) AS count FROM students WHERE studentID = ?";
@@ -256,6 +353,12 @@ public class DatabaseManager {
         return false;
     }
 
+    /**
+     * Registers a student for a course in the database.
+     * @param studentId the ID of the student
+     * @param courseCode the course code
+     * @throws SQLException if a database access error occurs
+     */
     public static void registerStudentForCourse(String studentId, String courseCode) throws SQLException {
         try(Connection conn = connect()) {
             String sql = "INSERT INTO registrations (studentID, courseCode) VALUES (?, ?)";
@@ -267,6 +370,12 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Retrieves a list of courses registered by a student from the database.
+     * @param student the student
+     * @return a list of courses registered by the student
+     * @throws SQLException if a database access error occurs
+     */
     public static List<Course> getRegisteredCourses(Student student) throws SQLException {
         List<Course> registeredCourses = new ArrayList<>();
         String sql = "SELECT r.courseCode, c.title, s.days, s.startTime, s.endTime " +
@@ -281,12 +390,11 @@ public class DatabaseManager {
                 while (rs.next()) {
                     String courseCode = rs.getString("courseCode");
                     String title = rs.getString("title");
-
                     String days = rs.getString("days");
                     String startTime = rs.getString("startTime");
-                    String endTIme = rs.getString("endTIme");
+                    String endTime = rs.getString("endTime");
 
-                    Schedule schedule = new Schedule(Collections.singletonList(days), startTime, endTIme);
+                    Schedule schedule = new Schedule(Collections.singletonList(days), startTime, endTime);
                     Course course = new Course(courseCode, title, schedule);
                     registeredCourses.add(course);
                 }
@@ -295,6 +403,13 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Checks if a student is registered for a specific course.
+     * @param student the student
+     * @param courseCode the course code
+     * @return true if the student is registered for the course, otherwise false
+     * @throws SQLException if a database access error occurs
+     */
     public static boolean isStudentRegisteredForCourse(Student student, String courseCode) throws SQLException {
         try (Connection conn = connect()) {
             String sql = "SELECT COUNT(*) AS count FROM registrations WHERE studentID = ? AND courseCode = ?";
@@ -311,6 +426,12 @@ public class DatabaseManager {
         return false;
     }
 
+    /**
+     * Deregisters a student from a course in the database.
+     * @param studentId the ID of the student
+     * @param courseCode the course code
+     * @throws SQLException if a database access error occurs
+     */
     public static void deregisterStudentFromCourse(String studentId, String courseCode) throws SQLException {
         try(Connection conn = connect()) {
             String sql = "DELETE FROM registrations WHERE studentID = ? AND courseCode = ?";

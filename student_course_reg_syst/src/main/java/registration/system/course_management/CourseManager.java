@@ -8,6 +8,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class CourseManager implements ICourseManagement {
+    /**
+     * Prints a list of courses with their course code and title.
+     *
+     * @param message the message to display before the course list
+     * @param courses the list of courses to print
+     */
     public void courseList(String message, List<Course> courses) {
         int count = 1;
 
@@ -18,6 +24,12 @@ public class CourseManager implements ICourseManagement {
         }
     }
 
+    /**
+     * Prints the schedule for a course, including days, start time, and end time.
+     *
+     * @param schedule the schedule of the course
+     * @param courseCode the course code
+     */
     public void printSchedule(Schedule schedule, String courseCode) {
         System.out.println("Schedule for " + courseCode + ":\n" +
                 "Days: " + schedule.days() + "\n" +
@@ -31,7 +43,9 @@ public class CourseManager implements ICourseManagement {
         if (!availableCourses.isEmpty()) {
             String message = "Available courses:";
             courseList(message, availableCourses);
-        } else System.out.println("Sorry, there are no available courses.");
+        } else {
+            System.out.println("Sorry, there are no available courses.");
+        }
     }
 
     @Override
@@ -40,7 +54,9 @@ public class CourseManager implements ICourseManagement {
         if (!registeredCourses.isEmpty()) {
             String message = "Registered course(s):";
             courseList(message, registeredCourses);
-        } else System.out.println("You are not registered for a course.");
+        } else {
+            System.out.println("You are not registered for a course.");
+        }
     }
 
     @Override
@@ -55,7 +71,9 @@ public class CourseManager implements ICourseManagement {
                     printSchedule(schedule, courseCode);
                 }
             }
-        } else System.err.println("Schedule not found! You have no registered courses.");
+        } else {
+            System.err.println("Schedule not found! You have no registered courses.");
+        }
     }
 
     @Override
@@ -67,7 +85,9 @@ public class CourseManager implements ICourseManagement {
                 course.courseCapacity();
                 System.out.println("You have successfully registered for course: " + course.getTitle());
             }
-        } else System.out.println("Course " + course.getTitle() + " is full.");
+        } else {
+            System.out.println("Course " + course.getTitle() + " is full.");
+        }
     }
 
     @Override
